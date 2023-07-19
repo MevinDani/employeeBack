@@ -13,6 +13,9 @@ app.use(cors())
 app.use(express.json())
 app.use(router)
 
+// export upload folder to client
+// folder,folder path
+app.use('/uploads', express.static('./uploads'))
 
 
 const port = 4000 || process.env.port

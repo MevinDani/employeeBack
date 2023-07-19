@@ -41,3 +41,49 @@ exports.employeeRegister = async (req, res) => {
         res.status(500).json(error)
     }
 }
+
+// get all employee data
+exports.getAllEmpData = async (req, res) => {
+    // access query params for req
+    const fname = req.query.search
+    const query = {
+        firstName: { $regex: fname, $options: "i" }
+    }
+    try {
+        const empData = await Employee.find(query)
+            .then((empData) => {
+                res.status(200).json(
+                    empData
+                )
+            })
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
+
+// get user based on id
+exports.getUserById = async (req, res) => {
+    const { userId } = req.params
+    try {
+        const userData = await Employee.findById(userId)
+            .then((userData) => {
+                res.status(200).json(userData)
+            })
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
+
+// deleteUser
+exports.deleteUserById = async (req, res) => {
+    const { userId } = req.params
+    try {
+        const removedItem = await Employee.findByIdAndDelete({ _id: userId })
+        res.status(201).json({
+            data: removedItem,
+            message: "user deleted"
+        })
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
